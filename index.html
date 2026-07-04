@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arshavin Dirgantara Pratama - Market Analyst Portfolio</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SCRIPT PEREDAM WARNING TAILWIND -->
+    <script>
+        const originalWarn = console.warn;
+        console.warn = function(message) {
+            if (typeof message === 'string' && message.includes('cdn.tailwindcss.com should not be used in production')) return;
+            originalWarn.apply(console, arguments);
+        };
+    </script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: {
+                        bgmain: '#05050A', cardbg: '#0D0D14', cardborder: 'rgba(255, 255, 255, 0.08)',
+                        accent: '#8B5CF6', accentblue: '#3B82F6', textmuted: '#A1A1AA'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Typed.js -->
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+    <style>
+        body { background-color: #05050A; color: #F4F4F5; overflow-x: hidden; user-select: none; }
+        p, h1, h2, h3, h4, span, input, b, i { user-select: auto; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #05050A; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        
+        .glass-panel { background: rgba(13, 13, 20, 0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--cardborder); }
+
+        /* === PRELOADER ANIMATION (UPGRADED) === */
+        #preloader { transition: opacity 0.8s ease, visibility 0.8s ease; }
+        
+        /* Animasi Mekanis: Berputar ke depan, memutar balik (kebelakang), lalu kembali ke awal */
+        .mechanic-spin { animation: spinFB 3.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+        @keyframes spinFB {
+            0% { transform: rotate(0deg); filter: drop-shadow(0 0 2px #3B82F6); }
+            40% { transform: rotate(180deg); filter: drop-shadow(0 0 12px #8B5CF6); } /* Maju cepat */
+            60% { transform: rotate(110deg); filter: drop-shadow(0 0 5px #3B82F6); } /* Mundur lambat */
+            100% { transform: rotate(360deg); filter: drop-shadow(0 0 2px #3B82F6); } /* Maju lagi ke posisi awal */
+        }
+        
+        /* Teks Welcome */
+        .welcome-text-glow {
+            background: linear-gradient(90deg, #F4F4F5, #A1A1AA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* === AMBIENT === */
+        .ambient-blob { position: fixed; border-radius: 50%; filter: blur(120px); z-index: -1; pointer-events: none; opacity: 0.15; animation: floatBlob 10s infinite alternate ease-in-out; }
+        @keyframes floatBlob { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.2); } }
+
+        .wave-bar { animation: wave 1s infinite alternate ease-in-out; }
+        .wave-bar:nth-child(1) { animation-delay: 0.1s; } .wave-bar:nth-child(2) { animation-delay: 0.3s; } .wave-bar:nth-child(3) { animation-delay: 0.2s; } .wave-bar:nth-child(4) { animation-delay: 0.5s; } .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        @keyframes wave { 0% { height: 6px; } 100% { height: 20px; } }
+
+        /* === 3D ID CARD === */
+        .id-card-wrapper { perspective: 1000px; display: flex; justify-content: center; z-index: 10; position: relative; }
+        .sway-container { transform-origin: top center; animation: sway 5s ease-in-out infinite alternate; display: flex; flex-direction: column; align-items: center; transform-style: preserve-3d; }
+        @keyframes sway { 0% { transform: rotateZ(2deg); } 100% { transform: rotateZ(-2deg); } }
+
+        .lanyard-string { width: 30px; height: 120px; background: #0a0a0a; clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%); z-index: 10; }
+        .id-card-clip { width: 40px; height: 12px; background: #222; border-radius: 4px; margin-top: -5px; z-index: 11; position: relative; }
+
+        .id-card-3d {
+            width: 280px; height: 410px; position: relative; border-radius: 16px; margin-top: -10px; display: flex; flex-direction: column; align-items: center; padding: 25px; transform-style: preserve-3d;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); overflow: hidden;
+            background: linear-gradient(-45deg, #0a0f18, #161122, #0d131a, #05050a); background-size: 300% 300%;
+            animation: tilt3D 8s ease-in-out infinite alternate, darkShimmer 10s ease infinite;
+        }
+        @keyframes darkShimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes tilt3D { 0% { transform: rotateX(5deg) rotateY(-8deg); } 50% { transform: rotateX(-3deg) rotateY(8deg); } 100% { transform: rotateX(6deg) rotateY(-5deg); } }
+        .id-card-3d::after {
+            content: ''; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: glare 7s infinite; z-index: 20; pointer-events: none;
+        }
+        @keyframes glare { 0%, 50% { left: -150%; } 60%, 100% { left: 200%; } }
+
+        .nav-link.active { background: rgba(255,255,255,0.1); color: #fff; }
+
+        /* === INTERACTIVE EFFECTS === */
+        .interactive { position: relative; overflow: hidden; transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; z-index: 10; }
+        .interactive:active { transform: scale(0.96); }
+        .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.2); transform: scale(0); animation: ripple-anim 0.6s linear forwards; pointer-events: none; }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+        
+        .animated-btn { background: linear-gradient(270deg, #8B5CF6, #3B82F6, #10B981, #8B5CF6); background-size: 300% 300%; color: white !important; border: none !important; animation: gradientCycle 4s ease infinite; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+        @keyframes gradientCycle { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* === PROJECT MODAL POPUP STYLES === */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: #0A0A10; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
+            width: 100%; max-width: 1000px; max-height: 90vh; overflow: hidden;
+            display: flex; flex-direction: column; md:flex-row;
+            transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+        }
+        .modal-overlay.active .modal-box { transform: scale(1) translateY(0); }
+        .modal-img-container { flex: 1.2; background: #111; overflow: hidden; position: relative; min-height: 250px; }
+        .modal-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-content { flex: 1; padding: 40px; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        .modal-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .modal-close:hover { background: rgba(255,255,255,0.1); transform: rotate(90deg); }
+
+        /* === AI CHATBOT STYLES === */
+        .chat-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .chat-overlay.active { opacity: 1; pointer-events: auto; }
+        .chat-widget-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: linear-gradient(135deg, #3B82F6, #8B5CF6); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.5); z-index: 9997; cursor: pointer; transition: transform 0.3s; animation: floatBtn 3s infinite alternate; }
+        .chat-widget-btn:hover { transform: scale(1.1); }
+        @keyframes floatBtn { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+        
+        .chat-window { position: fixed; top: 50%; left: 50%; width: 90%; max-width: 400px; height: 75vh; max-height: 600px; background: rgba(13, 13, 20, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); z-index: 9999; display: flex; flex-direction: column; overflow: hidden; opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0.95); transition: opacity 0.3s, transform 0.3s; }
+        .chat-window.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+        .chat-header { background: rgba(0, 0, 0, 0.6); padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-body::-webkit-scrollbar { width: 4px; } .chat-body::-webkit-scrollbar-thumb { background: #3B82F6; border-radius: 2px; }
+        .msg { max-w: 85%; padding: 10px 15px; font-size: 13px; line-height: 1.5; border-radius: 15px; position: relative; }
+        .msg-bot { background: rgba(255,255,255,0.08); border-top-left-radius: 4px; align-self: flex-start; color: #E4E4E7; border: 1px solid rgba(255,255,255,0.05); }
+        .msg-user { background: linear-gradient(135deg, #3B82F6, #8B5CF6); border-top-right-radius: 4px; align-self: flex-end; color: #fff; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+        .chat-input-area { padding: 15px; background: rgba(0, 0, 0, 0.6); border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; }
+        .chat-input { flex: 1; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 20px; color: #fff; font-size: 13px; outline: none; transition: border 0.3s; }
+        .chat-input:focus { border-color: #8B5CF6; background: rgba(255,255,255,0.12); }
+        .chat-send-btn { background: #8B5CF6; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; }
+        .chat-send-btn:hover { transform: scale(1.1); }
+        .typing-indicator { display: flex; gap: 4px; padding: 5px 10px; }
+        .typing-dot { width: 6px; height: 6px; background: #8B5CF6; border-radius: 50%; animation: typing 1.4s infinite ease-in-out; }
+        .typing-dot:nth-child(1) { animation-delay: 0s; } .typing-dot:nth-child(2) { animation-delay: 0.2s; } .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white relative">
+
+    <!-- AUDIO SOUND EFFECT -->
+    <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_735c026ec1.mp3?filename=click-button-140881.mp3" preload="auto"></audio>
+    <audio id="botSound" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=pop-39222.mp3" preload="auto"></audio>
+
+    <!-- PROJECT MODAL OVERLAY -->
+    <div id="project-modal-overlay" class="modal-overlay">
+        <div class="modal-box md:flex-row flex-col">
+            <div class="modal-img-container">
+                <img id="modal-img" src="" alt="Project Image">
+            </div>
+            <div class="modal-content">
+                <div id="close-modal" class="modal-close" onclick="closeProjectModal()"><i class="fa-solid fa-xmark text-textmuted"></i></div>
+                <div class="flex gap-2 mb-4" id="modal-tags"></div>
+                <h2 id="modal-title" class="text-3xl font-bold mb-4 tracking-tight leading-tight">Project Title</h2>
+                <p id="modal-desc" class="text-textmuted text-sm leading-relaxed mb-8">Description goes here.</p>
+                <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6 mb-8 font-mono text-[10px] text-textmuted">
+                    <div><span class="block text-white mb-1">MARKET / SECTOR</span><span id="modal-market">Crypto</span></div>
+                    <div><span class="block text-white mb-1">DURATION</span><span id="modal-duration">1 Week</span></div>
+                    <div class="col-span-2"><span class="block text-white mb-1">METRICS & TOOLS</span><span id="modal-tools">TradingView, On-chain</span></div>
+                </div>
+                <a href="#contact" onclick="closeProjectModal()" class="interactive mt-auto w-fit inline-flex items-center gap-2 text-xs font-bold text-white bg-white/5 hover:bg-white/10 px-5 py-3 rounded-full border border-white/10 transition-colors">
+                    Want an analysis like this? &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- AMBIENT BACKGROUND GLOW -->
+    <div class="ambient-blob top-[-10%] left-[-10%] w-[50vw] h-[50vh] bg-accentblue"></div>
+    <div class="ambient-blob bottom-[-10%] right-[-10%] w-[50vw] h-[50vh] bg-accent" style="animation-delay: -5s;"></div>
+
+    <!-- 1. PRELOADER (CINEMATIC UPGRADE) -->
+    <div id="preloader" class="fixed inset-0 bg-bgmain z-[1000] flex flex-col justify-center items-center py-12 px-6">
+        
+        <div id="loading-frame" class="flex flex-col items-center w-full max-w-lg transition-all duration-1000">
+            <div id="logo-icon" class="text-accentblue mb-6 mechanic-spin transition-all duration-1000">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 22h20L12 2z"></path></svg>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-tight mb-2 text-center">Arshavin Dirgantara Pratama.</h1>
+            <p class="font-mono text-xs text-textmuted tracking-[0.2em] mb-12">FINANCE &bull; CRYPTO &bull; MACRO</p>
+            
+            <div class="w-full mt-4">
+                <div class="flex justify-between font-mono text-[10px] text-textmuted mb-2"><span class="animate-pulse">SYSTEM INITIALIZATION</span><span id="load-percent">0%</span></div>
+                <div class="w-full h-[2px] bg-white/10 rounded-full overflow-hidden"><div id="load-bar" class="h-full bg-accentblue w-0 transition-all duration-100"></div></div>
+            </div>
+        </div>
+
+        <div id="welcome-frame" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center opacity-0 scale-90 pointer-events-none transition-all duration-1000 ease-out">
+            <h1 class="text-3xl md:text-5xl font-black tracking-tighter welcome-text-glow text-center leading-tight">
+                Welcome to <br>my website.
+            </h1>
+        </div>
+
+    </div>
+
+    <!-- 2. NAVBAR -->
+    <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-2xl">
+        <nav class="glass-panel rounded-full px-2 py-2 flex items-center justify-between overflow-x-auto no-scrollbar border-[#222]">
+            <div class="flex space-x-1 pl-2">
+                <a href="#home" class="interactive nav-link active text-xs font-medium text-textmuted hover:text-white px-4 py-2 rounded-full transition-colors whitespace-nowrap">Home</a>
+                <a href="#about" class="interactive nav-link text-xs font-medium text-textmuted hover:text-white px-4 py-2 rounded-full transition-colors whitespace-nowrap">About</a>
+                <a href="#services" class="interactive nav-link text-xs font-medium text-textmuted hover:text-white px-4 py-2 rounded-full transition-colors whitespace-nowrap">Services</a>
+                <a href="#work" class="interactive nav-link text-xs font-medium text-textmuted hover:text-white px-4 py-2 rounded-full transition-colors whitespace-nowrap">Work</a>
+            </div>
+            <a href="#contact" class="interactive animated-btn text-xs font-semibold px-5 py-2.5 rounded-full whitespace-nowrap shrink-0 ml-4">Hire Me &rarr;</a>
+        </nav>
+    </div>
+
+    <!-- AI CHAT WIDGET & OVERLAY -->
+    <div id="chat-overlay" class="chat-overlay"></div>
+    <div id="chat-btn" class="chat-widget-btn interactive">
+        <i class="fa-solid fa-robot text-white text-2xl pointer-events-none"></i>
+    </div>
+
+    <div id="chat-window" class="chat-window">
+        <div class="chat-header">
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <div class="w-8 h-8 rounded-full bg-accentblue flex items-center justify-center"><i class="fa-solid fa-brain text-white text-xs"></i></div>
+                    <div class="w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-[#0A0A10] absolute bottom-0 right-0"></div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white leading-tight pointer-events-none">Analyst AI</h4>
+                    <p class="text-[10px] text-emerald-400 font-mono pointer-events-none">Online • Ask anything</p>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <i id="close-chat" class="fa-solid fa-xmark text-textmuted hover:text-white cursor-pointer transition p-2 text-lg"></i>
+            </div>
+        </div>
+        
+        <div id="chat-body" class="chat-body">
+            <!-- Teks pembuka otomatis muncul via JS -->
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Tanya tentang IHSG, Bitcoin...">
+            <div id="chat-send" class="chat-send-btn interactive">
+                <i class="fa-solid fa-paper-plane pointer-events-none"></i>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-6 md:px-12 pt-40 pb-24 relative z-10">
+        <!-- 3. HERO SECTION -->
+        <section id="home" class="min-h-[75vh] flex flex-col lg:flex-row gap-16 items-center mb-32">
+            <div class="flex-1 w-full">
+                <div class="interactive inline-flex items-center gap-2 border border-[#333] rounded-full px-4 py-1.5 mb-8 bg-[#0A0A10]/50 backdrop-blur-md">
+                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_#10b981]"></span>
+                    <span class="font-mono text-[10px] text-textmuted tracking-wider uppercase">MA Nasy'atul Mutaallimin &bull; Open for work</span>
+                </div>
+                
+                <!-- Desain Teks Responsive & Anti-Overlap -->
+                <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-tight mb-6 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.05)] break-words max-w-full">
+                    <span id="typed-text"></span>
+                </h1>
+                
+                <p class="text-textmuted text-base md:text-lg mb-10 max-w-xl leading-relaxed">
+                    I'm <strong class="text-white">Arshavin Dirgantara Pratama</strong>. By day, I am a dedicated student. By craft, I am an independent market analyst dissecting the mechanics of Crypto, Equities, and Macro Economics.
+                </p>
+                <div class="flex items-center gap-4">
+                    <a href="#work" class="interactive animated-btn px-6 py-3 rounded-full text-sm font-semibold flex items-center gap-2">View Work &rarr;</a>
+                    <a href="#contact" class="interactive px-6 py-3 rounded-full text-sm font-semibold border border-white/20 hover:bg-white/10 transition-colors">Let's Talk</a>
+                </div>
+            </div>
+
+            <!-- Right Widget -->
+            <div class="w-full lg:w-[400px]">
+                <div class="interactive glass-panel p-6 rounded-3xl border-[#333]">
+                    <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                        <span class="font-mono text-[10px] text-textmuted uppercase tracking-widest flex items-center gap-2"><i class="fa-solid fa-layer-group text-white"></i> SKILL STACK</span>
+                        <span class="font-mono text-[10px] bg-white/5 px-2 py-1 rounded text-textmuted">Hover to explore</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="group cursor-default"><div class="flex justify-between text-sm mb-2 font-medium"><span class="group-hover:text-accentblue transition">Fundamental Analysis</span><span class="text-textmuted">95%</span></div><div class="h-1.5 w-full bg-[#1A1A24] rounded-full overflow-hidden"><div class="h-full bg-accentblue rounded-full w-[95%] shadow-[0_0_10px_#3B82F6]"></div></div></div>
+                        <div class="group cursor-default"><div class="flex justify-between text-sm mb-2 font-medium"><span class="group-hover:text-accent transition">Crypto Valuation</span><span class="text-textmuted">88%</span></div><div class="h-1.5 w-full bg-[#1A1A24] rounded-full overflow-hidden"><div class="h-full bg-accent rounded-full w-[88%] shadow-[0_0_10px_#8B5CF6]"></div></div></div>
+                        <div class="group cursor-default"><div class="flex justify-between text-sm mb-2 font-medium"><span class="group-hover:text-white transition">Macro Economics</span><span class="text-textmuted">92%</span></div><div class="h-1.5 w-full bg-[#1A1A24] rounded-full overflow-hidden"><div class="h-full bg-white rounded-full w-[92%] shadow-[0_0_10px_#ffffff]"></div></div></div>
+                    </div>
+                    <div class="mt-8 flex justify-between items-center pt-4 border-t border-white/10">
+                        <span class="font-mono text-[10px] text-textmuted uppercase tracking-widest">ACTIVITY</span>
+                        <div class="flex items-end gap-[3px] h-5">
+                            <div class="w-1 bg-white/50 rounded-full wave-bar"></div><div class="w-1 bg-white/50 rounded-full wave-bar"></div><div class="w-1 bg-accent rounded-full wave-bar shadow-[0_0_8px_#8B5CF6]"></div><div class="w-1 bg-white/50 rounded-full wave-bar"></div><div class="w-1 bg-white/50 rounded-full wave-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ABOUT SECTION -->
+        <section id="about" class="pt-24 mb-32 border-t border-white/5">
+            <div class="font-mono text-[10px] text-textmuted uppercase tracking-widest mb-4 flex items-center gap-4"><span class="w-8 h-[1px] bg-[#333]"></span> 01 ABOUT ME</div>
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="flex-1">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 tracking-tight leading-tight break-words">Hello, I'm<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-accentblue to-accent">Arshavin Dirgantara Pratama</span></h2>
+                    <p class="text-textmuted text-lg leading-relaxed mb-6">Bagi saya, analisis pasar bukan sekadar menebak arah grafik, melainkan memahami fundamental uang riil, membaca siklus bisnis melalui ekuitas, serta mengeksplorasi utilitas nyata di balik aset digital.</p>
+                    <p class="text-textmuted text-lg leading-relaxed mb-8">Penerapan <i>risk management</i> yang disiplin adalah fondasi esensial untuk mengamankan serta menumbuhkan nilai aset di era ekonomi yang dinamis.</p>
+                    <div class="flex gap-4 mb-12">
+                        <a href="#contact" class="interactive animated-btn px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors"><i class="fa-solid fa-envelope mr-2 pointer-events-none"></i> Get in touch</a>
+                        <a href="#work" class="interactive bg-[#111] text-white border border-[#333] px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#222] transition-colors">&lt;/&gt; View Analysis</a>
+                    </div>
+                </div>
+                
+                <!-- ID Card Responsif dengan Tinggi Lebih Proporsional -->
+                <div class="w-full lg:w-[400px] id-card-wrapper h-[480px]">
+                    <div class="sway-container">
+                        <div class="lanyard-string"></div>
+                        <div class="id-card-clip shadow-[0_5px_10px_rgba(0,0,0,0.5)]"></div>
+                        <div class="id-card-3d interactive">
+                            <div class="w-full h-56 bg-black rounded-lg mb-4 overflow-hidden relative pointer-events-none border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                                <img src="https://i.ibb.co/DPsnzRYg/image.jpg" referrerpolicy="no-referrer" onerror="this.src='https://ui-avatars.com/api/?name=Arshavin+Dirgantara+Pratama&background=0D0D14&color=8B5CF6&size=200'" alt="Arshavin" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Nama ID Card Diatur agar Auto-Wrap Rapi -->
+                            <h3 class="text-xl font-bold tracking-tight w-full text-left text-white leading-tight pointer-events-none break-words">Arshavin Dirgantara Pratama</h3>
+                            <p class="text-xs font-mono text-gray-400 w-full text-left mt-1 pointer-events-none">Market Analyst</p>
+                            <div class="mt-auto w-full flex justify-between items-end border-t border-white/10 pt-3 pointer-events-none">
+                                <span class="font-mono text-[9px] text-accentblue font-bold tracking-widest">Nasy'atul Mutaallimin</span>
+                                <span class="font-mono text-[9px] text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>ACTIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SERVICES & CAPABILITIES -->
+        <section id="services" class="pt-24 mb-32 border-t border-white/5">
+            <div class="font-mono text-[10px] text-textmuted uppercase tracking-widest mb-4 flex items-center gap-4"><span class="w-8 h-[1px] bg-[#333]"></span> 02 WHAT I DO</div>
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 tracking-tight">SERVICES & <i class="text-textmuted font-serif italic">capabilities.</i></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="interactive glass-panel p-8 rounded-2xl border-[#222] hover:border-accentblue transition-colors group bg-[#0A0A10]/40 backdrop-blur-md">
+                    <div class="font-mono text-xs text-textmuted mb-6 pointer-events-none">01</div><i class="fa-brands fa-bitcoin text-3xl mb-4 text-[#F7931A] group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_#F7931A] transition-all pointer-events-none"></i><h3 class="text-xl font-bold mb-3 pointer-events-none">Web3 & Crypto</h3><p class="text-sm text-textmuted mb-8 leading-relaxed pointer-events-none">Analisis asimetris terhadap infrastruktur desentralisasi. Mengkaji siklus Halving.</p>
+                </div>
+                <div class="interactive glass-panel p-8 rounded-2xl border-[#222] hover:border-accent transition-colors group bg-[#0A0A10]/40 backdrop-blur-md">
+                    <div class="font-mono text-xs text-textmuted mb-6 pointer-events-none">02</div><i class="fa-solid fa-chart-line text-3xl mb-4 text-accentblue group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_#3B82F6] transition-all pointer-events-none"></i><h3 class="text-xl font-bold mb-3 pointer-events-none">Equities</h3><p class="text-sm text-textmuted mb-8 leading-relaxed pointer-events-none">Evaluasi kepemilikan bisnis melalui pendekatan Value Investing untuk dividen.</p>
+                </div>
+                <div class="interactive glass-panel p-8 rounded-2xl border-[#222] hover:border-yellow-500 transition-colors group bg-[#0A0A10]/40 backdrop-blur-md">
+                    <div class="font-mono text-xs text-textmuted mb-6 pointer-events-none">03</div><i class="fa-solid fa-coins text-3xl mb-4 text-[#FFD700] group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_#FFD700] transition-all pointer-events-none"></i><h3 class="text-xl font-bold mb-3 pointer-events-none">Macro Econ</h3><p class="text-sm text-textmuted mb-8 leading-relaxed pointer-events-none">Strategi hedging menggunakan Logam Mulia untuk preservasi kekayaan.</p>
+                </div>
+                <div class="interactive glass-panel p-8 rounded-2xl border-[#222] hover:border-emerald-500 transition-colors group bg-[#0A0A10]/40 backdrop-blur-md">
+                    <div class="font-mono text-xs text-textmuted mb-6 pointer-events-none">04</div><i class="fa-solid fa-shield-halved text-3xl mb-4 text-emerald-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_#10b981] transition-all pointer-events-none"></i><h3 class="text-xl font-bold mb-3 pointer-events-none">Risk Control</h3><p class="text-sm text-textmuted mb-8 leading-relaxed pointer-events-none">Manajemen portofolio terstruktur untuk meminimalisir risiko sistemik.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SELECTED WORK -->
+        <section id="work" class="pt-24 mb-32 border-t border-white/5">
+            <div class="font-mono text-[10px] text-textmuted uppercase tracking-widest mb-4 flex items-center gap-4"><span class="w-8 h-[1px] bg-[#333]"></span> 03 SELECTED WORK</div>
+            <h2 class="text-4xl md:text-5xl font-bold mb-12 tracking-tight">Things I've <i class="text-textmuted font-serif italic">analyzed.</i></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Project 1 -->
+                <div class="interactive glass-panel rounded-2xl overflow-hidden border-[#222] group hover:border-white/20 transition-colors bg-[#0A0A10]/50 backdrop-blur-md" onclick="openProjectModal(0)">
+                    <div class="h-56 w-full overflow-hidden relative border-b border-[#222] pointer-events-none">
+                        <img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=800" onerror="this.style.display='none'" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" alt="Thumbnail">
+                    </div>
+                    <div class="p-6 pointer-events-none">
+                        <div class="flex gap-2 mb-3"><span class="text-[9px] bg-white/10 px-2 py-1 rounded text-white">CRYPTO</span><span class="text-[9px] bg-white/10 px-2 py-1 rounded text-white">ON-CHAIN</span></div>
+                        <div class="flex justify-between items-start mb-2"><h3 class="text-2xl font-bold leading-tight">Bitcoin Halving<br>Cycle Thesis</h3><span class="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors shrink-0"><i class="fa-solid fa-arrow-up-right-from-square text-sm"></i></span></div>
+                        <p class="text-sm text-textmuted line-clamp-2">Analisis komprehensif mengenai dampak historis pemotongan suplai (Halving) terhadap permintaan institusional ETF dan pergerakan tren <b>Bull Market</b> jangka panjang.</p>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="interactive glass-panel rounded-2xl overflow-hidden border-[#222] group hover:border-white/20 transition-colors bg-[#0A0A10]/50 backdrop-blur-md" onclick="openProjectModal(1)">
+                    <div class="h-56 w-full overflow-hidden relative border-b border-[#222] pointer-events-none">
+                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800" onerror="this.style.display='none'" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" alt="Thumbnail">
+                    </div>
+                    <div class="p-6 pointer-events-none">
+                        <div class="flex gap-2 mb-3"><span class="text-[9px] bg-white/10 px-2 py-1 rounded text-white">EQUITY</span><span class="text-[9px] bg-white/10 px-2 py-1 rounded text-white">DIVIDEND</span></div>
+                        <div class="flex justify-between items-start mb-2"><h3 class="text-2xl font-bold leading-tight">Banking Sector<br>Value Valuation</h3><span class="w-10 h-10 rounded-full border border-[#333] flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors shrink-0"><i class="fa-solid fa-arrow-up-right-from-square text-sm"></i></span></div>
+                        <p class="text-sm text-textmuted line-clamp-2">Penerapan strategi <b>Value Investing</b> pada emiten perbankan lapis satu (Big 4) di Indonesia untuk mengakumulasi aset pembayar dividen tinggi dengan rasio PBV rendah.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. CONTACT -->
+        <section id="contact" class="pt-24 border-t border-white/5">
+            <div class="font-mono text-[10px] text-textmuted uppercase tracking-widest mb-4 flex items-center gap-4"><span class="w-8 h-[1px] bg-[#333]"></span> 05 GET IN TOUCH</div>
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12">
+                <div class="flex-1"><h2 class="text-5xl md:text-7xl font-bold mb-4 tracking-tight">Have a project?<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700">Let's talk.</span></h2></div>
+                <div class="w-full md:w-[450px] glass-panel p-6 rounded-3xl border-[#222] bg-[#0A0A10]/60 backdrop-blur-xl">
+                    <div class="font-mono text-[10px] text-textmuted uppercase tracking-widest mb-6">Connect With Me</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="https://www.tiktok.com/@moonlight.inskyy?_r=1&_t=ZS-97jm8ZME2AG" target="_blank" class="interactive bg-[#111] border border-[#222] p-4 rounded-xl hover:border-cyan-400 transition-colors group"><i class="fa-brands fa-tiktok text-white text-xl mb-2 block pointer-events-none group-hover:drop-shadow-[0_0_8px_#22d3ee] transition-all"></i><h4 class="font-bold text-xs mb-1 pointer-events-none">TikTok</h4><p class="text-[10px] text-textmuted truncate pointer-events-none">@moonlight.inskyy</p></a>
+                        <a href="#" class="interactive bg-[#111] border border-[#222] p-4 rounded-xl hover:border-pink-500 transition-colors group"><i class="fa-brands fa-instagram text-pink-500 text-xl mb-2 block pointer-events-none group-hover:drop-shadow-[0_0_8px_#ec4899] transition-all"></i><h4 class="font-bold text-xs mb-1 pointer-events-none">Instagram</h4><p class="text-[10px] text-textmuted pointer-events-none">Direct Message</p></a>
+                        <a href="#" class="interactive bg-[#111] border border-[#222] p-4 rounded-xl hover:border-red-400 transition-colors group"><i class="fa-solid fa-envelope text-red-400 text-xl mb-2 block pointer-events-none group-hover:drop-shadow-[0_0_8px_#f87171] transition-all"></i><h4 class="font-bold text-xs mb-1 pointer-events-none">Email</h4><p class="text-[10px] text-textmuted truncate pointer-events-none">Send a message</p></a>
+                        <a href="#" class="interactive bg-[#111] border border-[#222] p-4 rounded-xl hover:border-green-500 transition-colors group"><i class="fa-brands fa-whatsapp text-green-500 text-xl mb-2 block pointer-events-none group-hover:drop-shadow-[0_0_8px_#22c55e] transition-all"></i><h4 class="font-bold text-xs mb-1 pointer-events-none">WhatsApp</h4><p class="text-[10px] text-textmuted pointer-events-none">Chat now</p></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-32 text-center border-t border-white/5 pt-12 pb-6"><h2 class="text-[10vw] font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white/30 to-transparent select-none pointer-events-none">Let's analyze.</h2></div>
+        </section>
+    </main>
+
+    <script>
+        // 1. PRELOADER
+        document.addEventListener("DOMContentLoaded", () => {
+            let progress = 0; 
+            const percentText = document.getElementById('load-percent');
+            const loadBar = document.getElementById('load-bar');
+            const preloader = document.getElementById('preloader');
+            const loadingFrame = document.getElementById('loading-frame');
+            const welcomeFrame = document.getElementById('welcome-frame');
+            const logoIcon = document.getElementById('logo-icon');
+            
+            document.body.style.overflow = 'hidden';
+            
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 5) + 2; 
+                if(progress > 100) progress = 100;
+                
+                percentText.innerText = progress + '%'; 
+                loadBar.style.width = progress + '%';
+                
+                if(progress === 100) {
+                    clearInterval(interval);
+                    logoIcon.classList.remove('mechanic-spin');
+                    logoIcon.style.transform = 'rotate(720deg) translateX(40px) scale(0)';
+                    logoIcon.style.opacity = '0';
+                    loadingFrame.style.opacity = '0';
+                    loadingFrame.style.transform = 'scale(0.9)';
+                    
+                    setTimeout(() => {
+                        welcomeFrame.classList.remove('opacity-0', 'scale-90');
+                        welcomeFrame.classList.add('opacity-100', 'scale-100');
+                        
+                        setTimeout(() => {
+                            preloader.style.opacity = '0'; 
+                            preloader.style.visibility = 'hidden'; 
+                            document.body.style.overflow = 'auto'; 
+                        }, 2200); 
+                    }, 800);
+                }
+            }, 80);
+        });
+
+        // 2. TYPING EFFECT HERO & NAVBAR SCROLL
+        new Typed('#typed-text', { strings: ['Arshavin Dirgantara Pratama.', 'Value Investor.', 'Crypto Analyst.', 'Macro Researcher.'], typeSpeed: 50, backSpeed: 30, backDelay: 2000, loop: true, cursorChar: '<span class="animate-pulse text-accentblue drop-shadow-[0_0_5px_#3B82F6]">|</span>' });
+        const sections = document.querySelectorAll("section"), navLinks = document.querySelectorAll(".nav-link");
+        window.addEventListener("scroll", () => { let current = ""; sections.forEach((s) => { if (pageYOffset >= (s.offsetTop - 300)) current = s.getAttribute("id"); }); navLinks.forEach((l) => { l.classList.remove("active"); if (l.getAttribute("href").includes(current)) l.classList.add("active"); }); });
+
+        // 3. INTERACTIVE UI RIPPLE & SOUND
+        const clickSound = document.getElementById('clickSound'); 
+        function applyRipple(element) {
+            element.addEventListener('mousedown', function(e) {
+                clickSound.volume = 0.5; clickSound.currentTime = 0; clickSound.play().catch(() => {});
+                const rect = this.getBoundingClientRect(), x = e.clientX - rect.left, y = e.clientY - rect.top;
+                const maxDim = Math.max(this.offsetWidth, this.offsetHeight);
+                const ripple = document.createElement('span'); ripple.style.width = ripple.style.height = maxDim + 'px'; ripple.style.left = (x - maxDim / 2) + 'px'; ripple.style.top = (y - maxDim / 2) + 'px'; ripple.classList.add('ripple');
+                this.appendChild(ripple); setTimeout(() => ripple.remove(), 600);
+            });
+        }
+        document.querySelectorAll('.interactive').forEach(applyRipple);
+
+        // ==========================================
+        // 4. PROJECT MODAL (ANTI-MACET & TOMBOL BACK)
+        // ==========================================
+        const projectsData = [
+            {
+                title: "Bitcoin Halving<br>Cycle Thesis", desc: "Analisis komprehensif mengenai dampak historis pemotongan suplai (Halving) terhadap permintaan institusional ETF dan pergerakan tren <b>Bull Market</b> jangka panjang.",
+                image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=800", tags: ["CRYPTO", "ON-CHAIN"], market: "BTC/USD", duration: "Long-Term Hold", tools: "TradingView, Glassnode"
+            },
+            {
+                title: "Banking Sector<br>Value Valuation", desc: "Penerapan strategi <b>Value Investing</b> pada emiten perbankan lapis satu (Big 4) di Indonesia untuk mengakumulasi aset pembayar dividen tinggi dengan rasio PBV rendah.",
+                image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800", tags: ["EQUITY", "DIVIDEND"], market: "IDX (IHSG)", duration: "Quarterly Review", tools: "Financial Reports, EPS"
+            }
+        ];
+
+        const modalOverlay = document.getElementById('project-modal-overlay');
+        
+        window.openProjectModal = function(index) {
+            const data = projectsData[index];
+            document.getElementById('modal-img').src = data.image; 
+            document.getElementById('modal-title').innerHTML = data.title; 
+            document.getElementById('modal-desc').innerHTML = data.desc;
+            document.getElementById('modal-market').innerHTML = data.market; 
+            document.getElementById('modal-duration').innerHTML = data.duration; 
+            document.getElementById('modal-tools').innerHTML = data.tools;
+            document.getElementById('modal-tags').innerHTML = data.tags.map(tag => `<span class="text-[10px] bg-accentblue/20 text-accentblue border border-accentblue/30 px-2 py-1 rounded">${tag}</span>`).join('');
+            
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+            window.location.hash = "modal"; 
+        }
+
+        window.closeProjectModal = function() {
+            if (window.location.hash === "#modal") {
+                history.back(); 
+            } else {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+            }
+        };
+
+        // ==========================================
+        // 5. AI CHATBOT ENGINE (NEW: TYPEWRITER EFFECT)
+        // ==========================================
+        const chatBtn = document.getElementById('chat-btn'); 
+        const chatWindow = document.getElementById('chat-window'); 
+        const closeChat = document.getElementById('close-chat'); 
+        const chatOverlay = document.getElementById('chat-overlay'); 
+        const chatBody = document.getElementById('chat-body'); 
+        const chatInput = document.getElementById('chat-input'); 
+        const chatSendBtn = document.getElementById('chat-send'); 
+        const botSound = document.getElementById('botSound');
+
+        chatBtn.addEventListener('click', () => { 
+            chatWindow.classList.add('active'); 
+            chatOverlay.classList.add('active'); 
+            chatBtn.style.transform = 'scale(0)'; 
+            chatInput.focus(); 
+            window.location.hash = "chat"; 
+            document.body.style.overflow = 'hidden';
+        });
+
+        window.closeChatWindow = function() { 
+            if (window.location.hash === "#chat") {
+                history.back();
+            } else {
+                chatWindow.classList.remove('active'); 
+                chatOverlay.classList.remove('active'); 
+                chatBtn.style.transform = 'scale(1)'; 
+                document.body.style.overflow = 'auto';
+            }
+        }
+        closeChat.addEventListener('click', closeChatWindow); 
+        chatOverlay.addEventListener('click', closeChatWindow);
+
+        window.addEventListener('hashchange', () => {
+            if (window.location.hash !== "#modal") modalOverlay.classList.remove('active');
+            if (window.location.hash !== "#chat") { chatWindow.classList.remove('active'); chatOverlay.classList.remove('active'); chatBtn.style.transform = 'scale(1)'; }
+            if (window.location.hash !== "#modal" && window.location.hash !== "#chat") document.body.style.overflow = 'auto';
+        });
+        
+        modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeProjectModal(); });
+
+        const knowledgeBase = [
+            { keywords: ["bitcoin", "btc", "beresiko", "risiko", "jatuh", "volatilitas"], response: "Bitcoin memiliki volatilitas ekstrem karena suplainya kaku (21 juta BTC). Meski berisiko, BTC kebal devaluasi fiat, menjadikannya <b>Digital Gold</b> dengan potensi naik yang asimetris." },
+            { keywords: ["ethereum", "eth", "smart contract"], response: "Ethereum (ETH) adalah tulang punggung Web3 dan DeFi. Dengan fitur Smart Contract, ETH adalah super-komputer global yang memproses transaksi desentralisasi." },
+            { keywords: ["halving", "siklus 4 tahun", "supply shock"], response: "Bitcoin Halving memotong reward penambang hingga 50% tiap 4 tahun. Ini menciptakan kelangkaan instan (Supply Shock) bahan bakar siklus <b>Bull Market</b>." },
+            { keywords: ["value investing", "saham", "equities"], response: "<b>Value Investing</b> adalah mengakuisisi bisnis dengan harga diskon di bawah nilai wajarnya. Fokus pada laporan keuangan, bukan sekadar tebak grafik." },
+            { keywords: ["emas", "xau", "gold", "safe haven"], response: "Emas (XAU) adalah uang absolut. Berfungsi sebagai <b>Safe Haven</b> atau asuransi preservasi daya beli dari gerusan inflasi fiat dan krisis geopolitik." },
+            { keywords: ["siapa arshavin", "arshavin dirgantara", "tentang arshavin"], response: "Arshavin Dirgantara Pratama adalah pengamat pasar independen yang fokus pada analisis data fundamental, dan siswa aktif di MA Nasy'atul Mutaallimin." },
+            { keywords: ["hai", "halo", "hello", "pagi", "siang", "malam", "assalamualaikum"], response: "Halo! Saya AI asisten pribadi Arshavin. Ada topik spesifik tentang Pasar Modal atau Crypto yang ingin didiskusikan?" },
+            { keywords: ["kontak", "hubungi", "wa", "whatsapp", "email", "tiktok", "instagram"], response: "Silakan gulir ke bagian paling bawah (menu <b>Contact</b>). Anda bisa langsung menuju TikTok (@moonlight.inskyy), Email, atau WhatsApp Arshavin." }
+        ];
+
+        function getAIResponse(input) {
+            let userText = input.toLowerCase().replace(/[^\w\s]/gi, '');
+            let bestMatch = null, highestScore = 0;
+            for (let kb of knowledgeBase) { let score = 0; for (let word of kb.keywords) { if (userText.includes(word)) score++; } if (score > highestScore) { highestScore = score; bestMatch = kb.response; } }
+            return bestMatch ? bestMatch : "Pertanyaan yang luar biasa! Sayangnya jawaban detailnya belum ada di <i>database</i> saya. Anda bisa menghubungi Arshavin langsung melalui WhatsApp atau Email.";
+        }
+
+        // Tampilkan pesan User
+        function addUserMessage(text) {
+            const msgDiv = document.createElement('div'); msgDiv.className = 'msg msg-user'; msgDiv.innerHTML = text;
+            chatBody.appendChild(msgDiv); chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        // Tampilkan pesan Bot (Mengetik Huruf demi Huruf)
+        function typeBotMessage(text) {
+            const msgDiv = document.createElement('div'); msgDiv.className = 'msg msg-bot';
+            chatBody.appendChild(msgDiv);
+            
+            if (botSound) { botSound.volume = 0.4; botSound.currentTime = 0; botSound.play().catch(()=>{}); }
+            
+            let i = 0;
+            let isTag = false;
+            let currentHTML = "";
+            
+            function type() {
+                if (i < text.length) {
+                    let char = text.charAt(i);
+                    if (char === '<') isTag = true;
+                    
+                    currentHTML += char;
+                    msgDiv.innerHTML = currentHTML;
+                    
+                    if (char === '>') isTag = false;
+                    
+                    i++;
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                    
+                    setTimeout(type, isTag ? 0 : 20); // Kecepatan ketik
+                }
+            }
+            type();
+        }
+
+        // Sapaan awal AI saat web dirender
+        setTimeout(() => {
+            const typingDiv = document.createElement('div'); typingDiv.className = 'msg msg-bot typing-indicator'; typingDiv.id = 'initial-typing';
+            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            chatBody.appendChild(typingDiv); chatBody.scrollTop = chatBody.scrollHeight;
+            
+            setTimeout(() => {
+                document.getElementById('initial-typing').remove();
+                typeBotMessage("Halo! Saya AI asisten pribadi Arshavin Dirgantara Pratama. Ada yang ingin Anda diskusikan tentang <b>Crypto</b>, <b>Saham</b>, atau <b>Makroekonomi</b>?");
+            }, 1000);
+        }, 3000);
+
+        function handleSend() {
+            let text = chatInput.value.trim(); if(!text) return;
+            addUserMessage(text); 
+            chatInput.value = '';
+            
+            const typingDiv = document.createElement('div'); typingDiv.className = 'msg msg-bot typing-indicator'; typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            chatBody.appendChild(typingDiv); chatBody.scrollTop = chatBody.scrollHeight;
+            
+            setTimeout(() => { 
+                document.getElementById('typing-indicator').remove(); 
+                let answer = getAIResponse(text);
+                typeBotMessage(answer); 
+            }, 1500);
+        }
+
+        chatSendBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keypress', function (e) { if (e.key === 'Enter') handleSend(); });
+    </script>
+</body>
+</html>
